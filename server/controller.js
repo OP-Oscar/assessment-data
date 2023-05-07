@@ -265,6 +265,18 @@ module.exports = {
 
         sequelize.query(query).then(dbRes => res.status(200).send(dbRes[0])).catch(err => console.log('error with createCity', err));
 
+        //incrementing city id for next city added
         city_id++
+    },
+
+    getCities: (req,res) => {
+        query = `
+                SELECT city_id, name as city, rating, co.country_id as country
+                FROM cities ci
+                JOIN countries co
+                ON ci.country_id = co.country_id;
+                `
+
+        sequelize.query(query).then((dbRes)=>res.status(200).send(dbRes[0])).catch(err => console.log(`error with getCities`, err));
     }
 }
