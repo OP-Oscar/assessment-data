@@ -12,7 +12,7 @@ app.use(cors())
 app.post('/seed', seed)
 
 // COUNTRIES
-// app.get('/countries', getCountries)
+app.get('/countries', getCountries)
 
 // CITIES
 // app.post('/cities', createCity)
