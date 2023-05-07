@@ -18,6 +18,9 @@ const sequelize = new Sequelize(CONNECTION_STRING,
        }
     });
 
+//creating id tracker for cities table
+let city_id = 1
+
 module.exports = {
     seed: (req, res) => {
         sequelize.query(`
@@ -238,6 +241,7 @@ module.exports = {
         }).catch(err => console.log('error seeding DB', err))
     },
 
+    //function to send all countries to front end
     getCountries: (req,res) =>{
         const query = `
                         SELECT *
@@ -248,5 +252,19 @@ module.exports = {
             console.log('getCountries ran successfully');
             res.status(200).send(dbRes[0]);
         }).catch(err => console.log('error with getCountries', err))
+    },
+
+    //function to add cities sent from front end
+    createCity: (req, res)=> {
+        const {name, rating, countryId} = req.body;
+
+        query=`
+                INSERT INTO cities
+                VALUES (${city_id}, '${name}', ${rating}, ${countryId})
+                `
+
+        sequelize.query(query).then(dbRes => res.status(200).send(dbRes[0])).catch(err => console.log('error with createCity', err));
+
+        city_id++
     }
 }
