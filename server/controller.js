@@ -18,11 +18,10 @@ const sequelize = new Sequelize(CONNECTION_STRING,
        }
     });
 
-//creating id tracker for cities table
-let city_id = 1
-
 module.exports = {
     seed: (req, res) => {
+
+        //extra credit part 2 between lines 238 to 242
         sequelize.query(`
             drop table if exists cities;
             drop table if exists countries;
@@ -235,6 +234,14 @@ module.exports = {
             ('Yemen'),
             ('Zambia'),
             ('Zimbabwe');
+
+            INSERT INTO cities (name,rating,country_id)
+            VALUES ('Zürich', 3, 170),
+                    ('New York', 4, 187),
+                    ('Celaya', 1, 111),
+                    ('Rome', 5, 84)
+
+
         `).then(() => {
             console.log('DB seeded!')
             res.sendStatus(200)
@@ -259,23 +266,25 @@ module.exports = {
         const {name, rating, countryId} = req.body;
 
         query=`
-                INSERT INTO cities
-                VALUES (${city_id}, '${name}', ${rating}, ${countryId})
+                INSERT INTO cities (name,rating,country_id)
+                VALUES ('${name}', ${rating}, ${countryId})
                 `
 
         sequelize.query(query).then(dbRes => res.status(200).send(dbRes[0])).catch(err => console.log('error with createCity', err));
 
-        //incrementing city id for next city added
-        city_id++
+
     },
 
     //function to pull all cities in table
     getCities: (req,res) => {
-       const query = `
+       
+        //line 281 is extra credit step 1
+        const query = `
                 SELECT ci.city_id, ci.name as city, ci.rating, co.country_id, co.name as country
                 FROM cities ci
                 JOIN countries co
-                ON ci.country_id = co.country_id;
+                ON ci.country_id = co.country_id
+                ORDER BY ci.rating DESC;
                 `
 
         sequelize.query(query).then((dbRes)=> res.status(200).send(dbRes[0])).catch(err => console.log(`error with getCities`, err));
@@ -292,6 +301,4 @@ module.exports = {
 
         sequelize.query(query).then(dbRes => res.status(200).send(dbRes[0])).catch(err => console.log('error with deleteCity', err));
     }
-
-
 }
