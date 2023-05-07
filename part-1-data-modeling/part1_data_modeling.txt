@@ -1,0 +1,55 @@
+Goal:
+Open pet adoption agency which will rescue and care for animals. Agency will aim to try and find owners that are good match.
+
+
+Ask:
+Design a database with at least 4 tables for your pet adoption agency. Include any relationships between tables where you feel they are needed.
+
+
+Functionality:
+-caregiver/trainers can add an animal to database (insert)
+-pet behaviors can change and pets may have different behaviors associated to them
+-caregiver can opt to remove pet once adoption happens 
+-pet that are no longer in facility can be moved to a table to maintain record
+-caregiver/trainers will have pets assigned
+
+
+Tables:
+care_giver - will hold information of care_giver in adoption center. Each row will be a unique trainer
+
+auth - will hold log in credentials for care_giver. Each row will be unique log in credentials
+
+pet - will hold data of pet. Each row will be single pet.
+
+pet species - will hold data of different species. Each row will be different species
+
+pet behavior - will hold data of different behavior types. Each row to hold different behavior
+
+facility pet - will hold data of pet currently in facitliy.
+
+adoption status - will hold adoption status of pets
+
+pet description - will hold information of behavior, status, species for each pet
+
+past pet - will hold data of pets previously in facility but that are no longer in facility. Each row unique to pet time frame.(for record)
+
+
+Relationships:
+
+
+one-to-one:
+care_giver - auth
+
+
+one-to-many:
+care_giver to pet 
+pet_species to pet
+adoption_status to pet
+facility_pet to pet
+past_pets to pet
+
+
+
+many-to-many(2 One to many):
+pet - pet behavior (middle table- pet_description)
+
