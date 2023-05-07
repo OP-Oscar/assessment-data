@@ -269,14 +269,29 @@ module.exports = {
         city_id++
     },
 
+    //function to pull all cities in table
     getCities: (req,res) => {
-        query = `
-                SELECT city_id, name as city, rating, co.country_id as country
+       const query = `
+                SELECT ci.city_id, ci.name as city, ci.rating, co.country_id, co.name as country
                 FROM cities ci
                 JOIN countries co
                 ON ci.country_id = co.country_id;
                 `
 
-        sequelize.query(query).then((dbRes)=>res.status(200).send(dbRes[0])).catch(err => console.log(`error with getCities`, err));
+        sequelize.query(query).then((dbRes)=> res.status(200).send(dbRes[0])).catch(err => console.log(`error with getCities`, err));
+    },
+
+    //function to delete cities in table
+    deleteCity: (req,res) => {
+        const{id} = req.params
+
+        const query = `
+                        DELETE FROM cities
+                        WHERE city_id = ${id};
+                        `
+
+        sequelize.query(query).then(dbRes => res.status(200).send(dbRes[0])).catch(err => console.log('error with deleteCity', err));
     }
+
+
 }
